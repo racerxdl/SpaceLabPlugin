@@ -24,11 +24,14 @@ namespace SpaceLab
         private Persistent<SpaceLabConfig> _config;
         public SpaceLabConfig Config => _config?.Data;
 
+        private GlobalGps _globalGps = new GlobalGps();
+
         public override void Init(ITorchBase torch)
         {
             base.Init(torch);
 
             SetupConfig();
+            _globalGps.Setup(StoragePath);
 
             var sessionManager = Torch.Managers.GetManager<TorchSessionManager>();
             if (sessionManager != null)
@@ -92,6 +95,11 @@ namespace SpaceLab
             {
                 Log.Warn(e, "Configuration failed to save");
             }
+        }
+        
+        public GlobalGps GetGlobalGPS()
+        {
+            return _globalGps;
         }
     }
 }
