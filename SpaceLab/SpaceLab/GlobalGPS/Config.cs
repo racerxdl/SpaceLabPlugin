@@ -63,6 +63,7 @@ namespace SpaceLab
             gps.ShowOnHud = true;
             gps.DiscardAt = null;
 
+            gps.UpdateHash();
             return gps;
         }
     }

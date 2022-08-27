@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Sandbox.Game.Gui;
 using Sandbox.Game.Multiplayer;
 using Sandbox.Game.Screens.Helpers;
 using Sandbox.Game.World;
@@ -51,9 +52,11 @@ namespace SpaceLab
             foreach (GlobalGpsConfig_GPS gps in gpsList)
             {
                 MyGps instanceGps = gps.ToMyGps();
-                MySession.Static.Gpss.AddPlayerGps(player.IdentityId, ref instanceGps);
-                
-                Context.Respond("Create GPS Location ("+gps.Name+") at:"+ gps.X +", "+ gps.Y +", "+ gps.Z);
+                if (MySession.Static.Gpss.AddPlayerGps(player.IdentityId, ref instanceGps))
+                {
+                    MyHud.GpsMarkers.RegisterMarker(instanceGps);
+                    Context.Respond("Create GPS Location ("+gps.Name+") at:"+ gps.X +", "+ gps.Y +", "+ gps.Z);
+                }
             }
         }
     }
