@@ -44,8 +44,6 @@ namespace SpaceLab
         public void GetAllPos()
         {
             IMyPlayer player = Context.Player;
-            long pEntityId = player.IdentityId; 
-            
             GlobalGps _globalGps = Plugin.GetGlobalGPS();
             Persistent<GlobalGpsConfig> _config = _globalGps.GetPersistence();
             List<GlobalGpsConfig_GPS> gpsList = _config.Data.GlobalSavedPositions.ToList();
@@ -53,7 +51,7 @@ namespace SpaceLab
             foreach (GlobalGpsConfig_GPS gps in gpsList)
             {
                 MyGps instanceGps = gps.ToMyGps();
-                MySession.Static.Gpss.AddPlayerGps(pEntityId, ref instanceGps);
+                MySession.Static.Gpss.AddPlayerGps(player.IdentityId, ref instanceGps);
                 
                 Context.Respond("Create GPS Location ("+gps.Name+") at:"+ gps.X +", "+ gps.Y +", "+ gps.Z);
             }
