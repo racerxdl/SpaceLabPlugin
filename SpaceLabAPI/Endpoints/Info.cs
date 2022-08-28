@@ -1,4 +1,5 @@
-﻿using Sandbox.Game.World;
+﻿using Sandbox.Game.Entities;
+using Sandbox.Game.World;
 using SharpBoss.Attributes;
 using SharpBoss.Attributes.Methods;
 using SharpBoss.Logging;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VRage.Groups;
 using VRageMath;
 
 namespace SpaceLabAPI.Endpoints
@@ -65,6 +67,38 @@ namespace SpaceLabAPI.Endpoints
             }).ToList();
         }
 
-
+        [GET("/grids")]
+        public List<Grid> GetGrids()
+        {
+            List<Grid> grids = new List<Grid>();
+            foreach (var group in MyCubeGridGroups.Static.Physical.Groups.ToList())
+            {
+                foreach (MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node groupNodes in group.Nodes)
+                {
+                    MyCubeGrid grid = groupNodes.NodeData;
+                    var ownerId = grid.BigOwners.Count > 0 ? grid.BigOwners[0] : -1;
+                    var ownerName = "NONE";
+                    var factionName = "NONE";
+                    var factionTag = "NONE";
+                    if (ownerId != -1)
+                    {
+                        ownerName = MySession.Static.Players.TryGetIdentity(ownerId)?.DisplayName ?? "NONE";
+                        factionName = MySession.Static.Factions.TryGetPlayerFaction(ownerId)?.Name ?? "NONE";
+                        factionTag = MySession.Static.Factions.TryGetPlayerFaction(ownerId)?.Tag ?? "NONE";
+                    }
+                    grids.Add(new Grid
+                    {
+                        Id = grid.EntityId.ToString(),
+                        Name = grid.DisplayName,
+                        Owner = ownerName,
+                        Position = grid.WorldMatrix.Translation,
+                        Faction = factionName,
+                        FactionTag = factionTag,
+                        Blocks = grid.BlocksCount
+                    });
+                }
+            }
+            return grids;
+        }
     }
 }
