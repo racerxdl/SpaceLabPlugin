@@ -10,29 +10,38 @@ namespace SpaceLab
 {
     public class GlobalGpsConfig_GPS : ViewModel
     {
+        public GlobalGpsConfig_GPS(Vector3D axis, string name, string createdBy)
+        {
+            X = axis.X;
+            Y = axis.Y;
+            Z = axis.Z;
+            CreatedBy = createdBy;
+            Name = name;
+        }
+        
         private double _x;
-        public double X
+        private double X
         {
             get => _x;
             set => SetValue(ref _x, value); 
         }
         
         private double _y;
-        public double Y
+        private double Y
         {
             get => _y;
             set => SetValue(ref _y, value); 
         }
         
         private double _z;
-        public double Z
+        private double Z
         {
             get => _z;
             set => SetValue(ref _z, value); 
         }
 
         private string _createdBy;
-        public string CreatedBy
+        private string CreatedBy
         {
             get => _createdBy;
             set => SetValue(ref _createdBy, value);
@@ -54,16 +63,15 @@ namespace SpaceLab
         
         public MyGps ToMyGps()
         {
-            MyGps gps = new MyGps();
-            
+            var gps = new MyGps();
             gps.Coords = new Vector3D(_x, _y, _z);
             gps.Name = _name;
             gps.GPSColor = Color.Gold;
             gps.AlwaysVisible = true;
             gps.ShowOnHud = true;
             gps.DiscardAt = null;
-
             gps.UpdateHash();
+            
             return gps;
         }
     }

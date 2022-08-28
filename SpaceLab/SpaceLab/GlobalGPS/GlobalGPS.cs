@@ -8,6 +8,9 @@ using VRage.Game.ModAPI;
 using VRage.Input;
 using VRageMath;
 using System.Collections.ObjectModel;
+using Sandbox.Game.Multiplayer;
+using Sandbox.Game.Screens.Helpers;
+using Sandbox.ModAPI;
 
 namespace SpaceLab
 {
@@ -42,6 +45,12 @@ namespace SpaceLab
         public Persistent<GlobalGpsConfig> GetPersistence()
         {
             return _config;
+        }
+        
+        public static void MarkGpsToPlayer(long identityId, MyGps gps)
+        {
+            var gpsCollection = (MyGpsCollection) MyAPIGateway.Session?.GPS;
+            gpsCollection?.SendAddGpsRequest(identityId, ref gps, 0L, true);
         }
     }
 }
