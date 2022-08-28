@@ -23,7 +23,7 @@ namespace SpaceLabAPI.Endpoints
         {
             return MySession.Static.VoxelMaps.Instances.ToList().Select((v) => new Voxel
             {
-                Id = v.EntityId,
+                Id = v.EntityId.ToString(),
                 Name = v.Name,
                 DebugName = v.DebugName,
                 Position = v.WorldMatrix.Translation,
@@ -58,8 +58,8 @@ namespace SpaceLabAPI.Endpoints
             MySession.Static.Players.GetOnlinePlayers().ForEach((p) => { playerDict[p.Identity.IdentityId] = p; });
             return allPlayerIdentities.Where((p) => p != null).Select((p) => new Player
             {
-                Id = p.IdentityId,
-                SteamId = playerDict.GetValueOrDefault(p.IdentityId)?.Id.SteamId ?? 0,
+                Id = p.IdentityId.ToString(),
+                SteamId = playerDict.GetValueOrDefault(p.IdentityId)?.Id.SteamId.ToString() ?? "",
                 Name = p.DisplayName,
                 Faction = MySession.Static.Factions.TryGetPlayerFaction(p.IdentityId)?.Name ?? "NONE",
                 IsOnline = onlinePlayers.Contains(p.IdentityId),

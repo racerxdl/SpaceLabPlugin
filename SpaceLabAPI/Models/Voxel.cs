@@ -9,7 +9,7 @@ namespace SpaceLabAPI.Models
 {
     public class Voxel
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string DebugName { get; set; }
         public Vector3D Position { get; set; }

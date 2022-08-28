@@ -9,10 +9,10 @@ namespace SpaceLabAPI.Models
 {
     public class Player
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Faction { get; set; }
-        public ulong SteamId { get; set; }
+        public string SteamId { get; set; }
         public bool IsOnline { get; set; }
         public Vector3D Position { get; set; }
         public double X { get { return Position.X; } }
