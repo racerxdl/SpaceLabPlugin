@@ -2,15 +2,12 @@
 using System.IO;
 using NLog;
 using Torch;
-using Torch.Commands;
-using Torch.Commands.Permissions;
-using VRage.Game.ModAPI;
-using VRage.Input;
-using VRageMath;
-using System.Collections.ObjectModel;
 using Sandbox.Game.Multiplayer;
 using Sandbox.Game.Screens.Helpers;
+using Sandbox.Game.World;
 using Sandbox.ModAPI;
+using Torch.API.Managers;
+using VRageMath;
 
 namespace SpaceLab
 {
@@ -51,6 +48,17 @@ namespace SpaceLab
         {
             var gpsCollection = (MyGpsCollection) MyAPIGateway.Session?.GPS;
             gpsCollection?.SendAddGpsRequest(identityId, ref gps, 0L, true);
+        }
+
+        public static void MarkGpsToAllPlayers(SpaceLab plugin, MyGps gps)
+        {
+            var players = MySession.Static.Players.GetAllIdentities();
+            foreach (var player in players)
+            {
+                MarkGpsToPlayer(player.IdentityId, gps);
+            }
+            
+            plugin.Torch.CurrentSession?.Managers?.GetManager<IChatManagerServer>()?.SendMessageAsOther("GlobalPS", "A new gps mark as added to you", Color.Gold);
         }
     }
 }
