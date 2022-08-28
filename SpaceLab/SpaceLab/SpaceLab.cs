@@ -24,10 +24,12 @@ namespace SpaceLab
         private Persistent<SpaceLabConfig> _config;
         public SpaceLabConfig Config => _config?.Data;
 
+        private SpaceLabServer server;
+
         public override void Init(ITorchBase torch)
         {
             base.Init(torch);
-
+            server = new SpaceLabServer();
             SetupConfig();
 
             var sessionManager = Torch.Managers.GetManager<TorchSessionManager>();
@@ -41,16 +43,18 @@ namespace SpaceLab
 
         private void SessionChanged(ITorchSession session, TorchSessionState state)
         {
-
+            
             switch (state)
             {
 
                 case TorchSessionState.Loaded:
                     Log.Info("Session Loaded!");
+                    server.StartServer();
                     break;
 
                 case TorchSessionState.Unloading:
                     Log.Info("Session Unloading!");
+                    server.StopServer();
                     break;
             }
         }
