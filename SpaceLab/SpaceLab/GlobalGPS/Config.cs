@@ -9,6 +9,7 @@ namespace SpaceLab
 {
     public class GlobalGpsConfig_GPS : ViewModel
     {
+        public GlobalGpsConfig_GPS() { }
         public GlobalGpsConfig_GPS(Vector3D axis, string name, string createdBy)
         {
             X = axis.X;

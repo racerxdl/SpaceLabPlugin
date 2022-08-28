@@ -197,6 +197,7 @@
     <Compile Include="SpaceLab\SpaceLabCommands.cs" />
     <Compile Include="SpaceLab\SpaceLabConfig.cs" />
     <Compile Include="SpaceLab\SpaceLab.cs" />
+    <Compile Include="SpaceLab\SpaceLabMessage.cs" />
     <Compile Include="SpaceLab\SpaceLabServer.cs" />
     <EmbeddedResource Include="SpaceLab\Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
