@@ -15,6 +15,14 @@ namespace SpaceLabAPI.Models
         public string Faction { get; set; }
         public string FactionTag { get; set; }
         public int Blocks { get; set; }
+        public bool IsPowered { get; set; }
+        public double GridSize { get; set; }
+        public bool IsStatic { get; set; }
+        public bool IsParked { get; set; }
+        public string ParentId { get; set; }
+        public int RelGroupId { get; set; }
+        public int RelGroupCount { get; set; }
+        public int PCU { get; set; }
         public Vector3D Position { get; set; }
         public double X { get { return Position.X; } }
         public double Y { get { return Position.Y; } }

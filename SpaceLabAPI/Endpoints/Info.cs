@@ -1,4 +1,5 @@
-﻿using Sandbox.Game.Entities;
+﻿using Sandbox.Engine.Multiplayer;
+using Sandbox.Game.Entities;
 using Sandbox.Game.World;
 using SharpBoss.Attributes;
 using SharpBoss.Attributes.Methods;
@@ -71,6 +72,7 @@ namespace SpaceLabAPI.Endpoints
         public List<Grid> GetGrids()
         {
             List<Grid> grids = new List<Grid>();
+            int relGroupId = 0;
             foreach (var group in MyCubeGridGroups.Static.Physical.Groups.ToList())
             {
                 foreach (MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node groupNodes in group.Nodes)
@@ -80,6 +82,7 @@ namespace SpaceLabAPI.Endpoints
                     var ownerName = "NONE";
                     var factionName = "NONE";
                     var factionTag = "NONE";
+
                     if (ownerId != -1)
                     {
                         ownerName = MySession.Static.Players.TryGetIdentity(ownerId)?.DisplayName ?? "NONE";
@@ -94,9 +97,18 @@ namespace SpaceLabAPI.Endpoints
                         Position = grid.WorldMatrix.Translation,
                         Faction = factionName,
                         FactionTag = factionTag,
-                        Blocks = grid.BlocksCount
+                        Blocks = grid.BlocksCount,
+                        IsPowered = grid.IsPowered,
+                        IsStatic = grid.IsStatic,
+                        IsParked = grid.IsParked,
+                        GridSize = grid.GridSize,
+                        PCU = grid.BlocksPCU,
+                        ParentId = grid.Parent?.EntityId.ToString(),
+                        RelGroupId = relGroupId,
+                        RelGroupCount = group.Nodes.Count,
                     });
                 }
+                relGroupId++;
             }
             return grids;
         }
