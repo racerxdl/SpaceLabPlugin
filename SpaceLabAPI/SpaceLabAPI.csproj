@@ -104,6 +104,7 @@
     <Compile Include="Endpoints\Interact.cs" />
     <Compile Include="Models\Faction.cs" />
     <Compile Include="Models\Grid.cs" />
+    <Compile Include="Models\GridGroup.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Voxel.cs" />

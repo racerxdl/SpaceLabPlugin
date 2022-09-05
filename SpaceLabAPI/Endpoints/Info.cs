@@ -19,6 +19,76 @@ namespace SpaceLabAPI.Endpoints
     [REST("/info")]
     public class Info
     {
+        [GET("/test")]
+        public string Test()
+        {
+            string result = "";
+
+            MySession.Static.VoxelMaps.Instances.ToList().ForEach((v) =>
+            {
+
+                result += "<BR/>";
+                result += $"Voxel: {v.DebugName}<BR/>";
+                result += $"Size: {v.Size.ToString()}<BR/>";
+                result += $"SizeInMeters: {v.SizeInMetres.ToString()}<BR/>";
+                result += $"SizeInMetersHalf: {v.SizeInMetresHalf.ToString()}<BR/>";
+                result += $"SizeMinusOne: {v.SizeMinusOne.ToString()}<BR/>";
+                result += $"VoxelSize: {v.VoxelSize.ToString()}<BR/>";
+                result += $"Scale: {v.WorldMatrix.Scale}<BR/>";
+                result += $"ScaleGroup: {v.ScaleGroup}<BR/>";
+                result += $"BoundingBoxSize: {v.Model?.BoundingBoxSize}<BR/>";
+                result += $"RootVoxel: {v.RootVoxel?.ToString()}<BR/>";
+                result += $"RootVoxelSize: {v.RootVoxel?.Size}<BR/>";
+                result += $"RootVoxelSize: {v.RootVoxel?.SizeInMetres}<BR/>";
+                result += $"RootVoxelRootVoxel: {v.RootVoxel?.RootVoxel?.ToString()}<BR/>";
+                result += $"RootVoxelRootVoxelSize: {v.RootVoxel?.RootVoxel?.Size}<BR/>";
+                result += $"RootVoxelRootVoxelSize: {v.RootVoxel?.RootVoxel?.SizeInMetres}<BR/>";
+                if (v.DebugName.IndexOf("MyPlanet") >= 0)
+                {
+                    MyPlanet p = v as MyPlanet;
+                    result += $"Minimum Radius: {p?.MinimumRadius}<BR/>";
+                    result += $"Average Radius: {p?.AverageRadius}<BR/>";
+                    result += $"Maximum Radius: {p?.MaximumRadius}<BR/>";
+                }
+                result += "<BR/><BR/>";
+            });
+            return result.Replace("<BR/>", Environment.NewLine);
+        }
+
+        public double planetSize(MyVoxelBase voxel)
+        {
+            if (voxel.DebugName.IndexOf("MyPlanet") >= 0)
+            {
+                MyPlanet p = voxel as MyPlanet;
+
+                return p.AverageRadius * 2;
+            }
+
+            return Math.Max(Math.Max(voxel.Size.X, voxel.Size.Y), voxel.Size.Z) / 2.5;
+        }
+        public double atmosphereAltitude(MyVoxelBase voxel)
+        {
+            if (voxel.DebugName.IndexOf("MyPlanet") >= 0)
+            {
+                MyPlanet p = voxel as MyPlanet;
+
+                return p.AtmosphereAltitude;
+            }
+
+            return 0;
+        }
+        public bool hasAtmosphere(MyVoxelBase voxel)
+        {
+            if (voxel.DebugName.IndexOf("MyPlanet") >= 0)
+            {
+                MyPlanet p = voxel as MyPlanet;
+
+                return p.HasAtmosphere;
+            }
+
+            return false;
+        }
+
         [GET("/voxels")]
         public List<Voxel> GetVoxels()
         {
@@ -28,7 +98,9 @@ namespace SpaceLabAPI.Endpoints
                 Name = v.Name,
                 DebugName = v.DebugName,
                 Position = v.WorldMatrix.Translation,
-                Size = v.Size,
+                Size = planetSize(v),
+                AtmosphereAltitude = atmosphereAltitude(v),
+                HasAtmosphere = hasAtmosphere(v),
             }).ToList();
         }
 
@@ -66,6 +138,83 @@ namespace SpaceLabAPI.Endpoints
                 IsOnline = onlinePlayers.Contains(p.IdentityId),
                 Position = playerDict.GetValueOrDefault(p.IdentityId)?.GetPosition() ?? new Vector3D()
             }).ToList();
+        }
+
+        [GET("/v2grids")]
+        public List<GridGroup> GetV2Grids()
+        {
+            List<GridGroup> groups = new List<GridGroup>();
+
+
+            foreach (var group in MyCubeGridGroups.Static.Physical.Groups.ToList())
+            {
+                GridGroup ggroup = new GridGroup();
+                Dictionary<string, int> owners = new Dictionary<string, int>();
+                Dictionary<string, string> factions = new Dictionary<string, string>();
+                Dictionary<string, string> factionTags = new Dictionary<string, string>();
+
+                owners["NONE"] = 0;
+                factionTags["NONE"] = "NONE";
+                factions["NONE"] = "NONE";
+                ggroup.Grids = new List<Grid>();
+
+
+                foreach (MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node groupNodes in group.Nodes)
+                {
+                    MyCubeGrid grid = groupNodes.NodeData;
+                    var ownerId = grid.BigOwners.Count > 0 ? grid.BigOwners[0] : -1;
+                    var ownerName = "NONE";
+                    var factionName = "NONE";
+                    var factionTag = "NONE";
+
+                    if (ownerId != -1)
+                    {
+                        ownerName = MySession.Static.Players.TryGetIdentity(ownerId)?.DisplayName ?? "NONE";
+                        factionName = MySession.Static.Factions.TryGetPlayerFaction(ownerId)?.Name ?? "NONE";
+                        factionTag = MySession.Static.Factions.TryGetPlayerFaction(ownerId)?.Tag ?? "NONE";
+                    }
+
+                    factions[ownerName] = factionName;
+                    factionTags[ownerName] = factionTag;
+
+                    if (!owners.ContainsKey(ownerName))
+                    {
+                        owners[ownerName] = 0;
+                    }
+
+                    owners[ownerName]++;
+
+                    ggroup.Grids.Add(new Grid
+                    {
+                        Id = grid.EntityId.ToString(),
+                        Name = grid.DisplayName,
+                        Owner = ownerName,
+                        Position = grid.WorldMatrix.Translation,
+                        Faction = factionName,
+                        FactionTag = factionTag,
+                        Blocks = grid.BlocksCount,
+                        IsPowered = grid.IsPowered,
+                        IsStatic = grid.IsStatic,
+                        IsParked = grid.IsParked,
+                        GridSize = grid.GridSize,
+                        PCU = grid.BlocksPCU,
+                        ParentId = grid.Parent?.EntityId.ToString(),
+                        RelGroupId = groups.Count,
+                        RelGroupCount = group.Nodes.Count,
+                    });
+                    ggroup.Blocks += grid.BlocksCount;
+                }
+
+                ggroup.Owner = owners.Aggregate((a, b) =>
+                {
+                    return a.Value > b.Value ? a : b;
+                }).Key;
+                ggroup.Faction = factions.GetValueOrDefault(ggroup.Owner);
+                ggroup.Tag = factionTags.GetValueOrDefault(ggroup.Owner);
+
+                groups.Add(ggroup);
+            }
+            return groups;
         }
 
         [GET("/grids")]
