@@ -1,15 +1,13 @@
-// write a readme for a space lab plugin
-
 # SpaceLab Plugin
 
 This is WAY under testing and development. But with a lot of cool features.
 
-# Contributing
+## Contributing
 
 Open folder SDK and run `Setup.bat` fill directorys of SpaceEngineers Dedicated Server and Torch Server for SDK References 
 
 
-# License
+## License
 
 The source-code itself is under MIT License. The assets under webui/public/img should be dealt as proprietary.
 
