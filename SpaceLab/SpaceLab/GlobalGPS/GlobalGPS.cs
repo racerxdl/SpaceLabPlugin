@@ -8,6 +8,8 @@ using Sandbox.Game.World;
 using Sandbox.ModAPI;
 using Torch.API.Managers;
 using VRageMath;
+using VRage.Game.ModAPI;
+using Torch.Commands;
 
 namespace SpaceLab
 {
@@ -42,6 +44,19 @@ namespace SpaceLab
         public Persistent<GlobalGpsConfig> GetPersistence()
         {
             return _config;
+        }
+
+        public bool IsAllowedToCommand(CommandContext context, MyPromoteLevel expectedLevel)
+        {
+            var player = context.Player;
+
+            if (player.PromoteLevel < expectedLevel) {
+                context.Respond("You doesnt have level to do this");
+                
+                return false;
+            }
+
+            return true;
         }
         
         public static void MarkGpsToPlayer(long identityId, MyGps gps)

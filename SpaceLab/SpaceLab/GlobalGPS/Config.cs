@@ -79,11 +79,18 @@ namespace SpaceLab
     public class GlobalGpsConfig : ViewModel
     {
 
-        private MyPromoteLevel _promoteLevel = MyPromoteLevel.None;
-        public MyPromoteLevel PromoteLevel
+        private MyPromoteLevel _promoteLevel = MyPromoteLevel.Moderator;
+        public MyPromoteLevel UsagePromoteLevel
         {
             get => _promoteLevel;
             set => SetValue(ref _promoteLevel, value);
+        }
+
+        private MyPromoteLevel _manageLevel = MyPromoteLevel.Admin;
+        public MyPromoteLevel ManagePromoteLevel
+        {
+            get => _manageLevel;
+            set => SetValue(ref _manageLevel, value);
         }
 
         private ObservableCollection<GlobalGpsConfig_GPS> _positions = new ObservableCollection<GlobalGpsConfig_GPS>();

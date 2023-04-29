@@ -2,6 +2,7 @@
 using Torch.Commands;
 using Torch.Commands.Permissions;
 using VRage.Game.ModAPI;
+using VRage.Plugins;
 
 namespace SpaceLab
 {
@@ -9,14 +10,37 @@ namespace SpaceLab
     public class GlobalGpsCommand : CommandModule
     {
         private SpaceLab Plugin => (SpaceLab)Context.Plugin;
-            
+
+        [Command("get", "Global GPS System: Get all positions")]
+        [Permission(MyPromoteLevel.None)]
+        public void GetAllPos()
+        {
+            var plugin = Plugin.GetGlobalGPS();
+            var config = plugin.GetPersistence();
+
+            if (plugin.IsAllowedToCommand(Context, config.Data.UsagePromoteLevel))
+            {
+                return;
+            }
+
+            config.Data.GlobalSavedPositions.ForEach(gps => GlobalGps.MarkGpsToPlayer(Context.Player.IdentityId, gps.ToMyGps()));
+            Context.Respond("Successful get all global gps location");
+        }
+
         [Command("save", "Global GPS System: Save your location")]
         [Permission(MyPromoteLevel.None)]
         public void SavePos(string name)
         {
+            var plugin = Plugin.GetGlobalGPS();
+            var config = plugin.GetPersistence();
+
+            if (plugin.IsAllowedToCommand(Context, config.Data.ManagePromoteLevel))
+            {
+                return;
+            }
+
             var player = Context.Player;
             var playerPos = player.GetPosition();
-            var config = Plugin.GetGlobalGPS().GetPersistence();
             
             if (config.Data.GlobalSavedPositions.ToList().Any(gpsMark => gpsMark.Name == name))
             {
@@ -33,25 +57,17 @@ namespace SpaceLab
             Context.Respond("Successful save Global GPS location ("+name+"): "+ playerPos.X +", "+ playerPos.Y +", "+ playerPos.Z);
         }
         
-        [Command("get", "Global GPS System: Get all positions")]
-        [Permission(MyPromoteLevel.None)]
-        public void GetAllPos()
-        {
-            var player = Context.Player;
-            var globalGps = Plugin.GetGlobalGPS();
-            var config = globalGps.GetPersistence();
-            
-            config.Data.GlobalSavedPositions.ForEach(gps => GlobalGps.MarkGpsToPlayer(player.IdentityId, gps.ToMyGps()));
-            Context.Respond("Successful get all global gps location");
-        }
-        
-        // Admin Commands
         [Command("delete", "Global GPS System: Delete a position")]
-        [Permission(MyPromoteLevel.Admin)]
+        [Permission(MyPromoteLevel.None)]
         public void DeletePos(string name)
         {
-            var globalGps = Plugin.GetGlobalGPS();
-            var config = globalGps.GetPersistence();
+            var plugin = Plugin.GetGlobalGPS();
+            var config = plugin.GetPersistence();
+
+            if (plugin.IsAllowedToCommand(Context, config.Data.ManagePromoteLevel))
+            {
+                return;
+            }
 
             foreach(var gps in config.Data.GlobalSavedPositions.ToList().Where(gps => gps.Name == name))
             {
