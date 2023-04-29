@@ -24,10 +24,15 @@ namespace SpaceLab
         public SpaceLabServer()
         {
             Log.Info("Creating sharpboss instance");
-            sharpBoss = new SharpBoss.SharpBoss("http://*:20000/");
+            sharpBoss = new SharpBoss.SharpBoss("http://10.30.0.21:20000/");
             Log.Info("sharpboss instance created");
             messages = new List<SpaceLabMessage>();
             messageMtx = new Mutex();
+        }
+
+        public void ForceReload()
+        {
+            sharpBoss.ForceReload();
         }
 
         public void StartServer()

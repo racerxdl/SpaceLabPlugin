@@ -19,6 +19,8 @@ namespace SpaceLabAPI.Models
         public double X { get { return Position.X; } }
         public double Y { get { return Position.Y; } }
         public double Z { get { return Position.Z; } }
+
+        public Tuple<double, double> HillParameters { get; set; }
         // Deprecated
         public double SizeX { get { return Size; } }
         // Deprecated

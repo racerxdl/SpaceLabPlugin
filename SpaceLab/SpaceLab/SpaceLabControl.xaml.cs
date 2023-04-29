@@ -21,7 +21,12 @@ namespace SpaceLab
 
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Plugin.Save();
+            // Plugin.Save();
+        }
+        private void ForceReloadButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            // Plugin.Save();
+            Plugin.ForceReload();
         }
     }
 }

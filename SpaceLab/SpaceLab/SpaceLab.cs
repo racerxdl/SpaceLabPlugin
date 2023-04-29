@@ -1,6 +1,7 @@
 ﻿using NLog;
 using System;
 using System.IO;
+using System.Threading;
 using System.Windows.Controls;
 using Torch;
 using Torch.API;
@@ -42,6 +43,16 @@ namespace SpaceLab
                 Log.Warn("No session manager loaded!");
 
             Save();
+        }
+
+        public void ForceReload()
+        {
+            ThreadPool.QueueUserWorkItem((state) =>
+            {
+                Log.Info("Reloading SpaceLab Plugin...");
+                server.ForceReload();
+                Log.Info("SpaceLab Plugin Reloaded!");
+            });
         }
 
         private void SessionChanged(ITorchSession session, TorchSessionState state)

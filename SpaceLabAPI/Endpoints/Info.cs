@@ -19,10 +19,32 @@ namespace SpaceLabAPI.Endpoints
     [REST("/info")]
     public class Info
     {
+        [GET("/global")]
+        public GlobalInfo GlobalInfo()
+        {
+            return  new GlobalInfo { 
+                SunNormalizedPosition = MySector.DirectionToSunNormalized,
+                LargeShipMaxAngularSpeed = MySector.EnvironmentDefinition?.LargeShipMaxAngularSpeed,
+                LargeShipMaxSpeed = MySector.EnvironmentDefinition?.LargeShipMaxSpeed,
+                SmallShipMaxAngularSpeed = MySector.EnvironmentDefinition?.SmallShipMaxAngularSpeed,
+                SmallShipMaxSpeed = MySector.EnvironmentDefinition?.SmallShipMaxSpeed,
+                SunIntensity = MySector.EnvironmentDefinition?.SunProperties.SunIntensity
+            };
+        }
+
         [GET("/test")]
         public string Test()
         {
             string result = "";
+            result += "Server Info: <BR/>";
+            var sun = MySector.DirectionToSunNormalized;
+            result += $"Sun: {sun.X} {sun.Y} {sun.Z}<BR/>";
+            result += $"Sun Intensity: {MySector.EnvironmentDefinition?.SunProperties.SunIntensity}<BR/>";
+            result += $"Small Ship Max Speed: {MySector.EnvironmentDefinition?.SmallShipMaxSpeed}<BR/>";
+            result += $"Small Ship Max Angular Speed: {MySector.EnvironmentDefinition?.SmallShipMaxAngularSpeed}<BR/>";
+            result += $"Large Ship Max Speed: {MySector.EnvironmentDefinition?.LargeShipMaxSpeed}<BR/>";
+            result += $"Large Ship Max Angular Speed: {MySector.EnvironmentDefinition?.LargeShipMaxAngularSpeed}<BR/>";
+            result += "<BR/>";
 
             MySession.Static.VoxelMaps.Instances.ToList().ForEach((v) =>
             {
@@ -46,9 +68,11 @@ namespace SpaceLabAPI.Endpoints
                 if (v.DebugName.IndexOf("MyPlanet") >= 0)
                 {
                     MyPlanet p = v as MyPlanet;
+                    
                     result += $"Minimum Radius: {p?.MinimumRadius}<BR/>";
                     result += $"Average Radius: {p?.AverageRadius}<BR/>";
                     result += $"Maximum Radius: {p?.MaximumRadius}<BR/>";
+                    result += $"HillParams: {p?.Generator?.HillParams.Min};{p?.Generator?.HillParams.Max}<BR/>";
                 }
                 result += "<BR/><BR/>";
             });
@@ -66,6 +90,18 @@ namespace SpaceLabAPI.Endpoints
 
             return Math.Max(Math.Max(voxel.Size.X, voxel.Size.Y), voxel.Size.Z) / 2.5;
         }
+
+        public Tuple<double, double> GetHillParams(MyVoxelBase voxel)
+        {
+            if (voxel.DebugName.IndexOf("MyPlanet") >= 0)
+            {
+                MyPlanet p = voxel as MyPlanet;
+                return new Tuple<double, double>(p.Generator.HillParams.Min, p.Generator.HillParams.Max);
+            }
+
+            return new Tuple<double, double>(0, 0);
+        }
+
         public double atmosphereAltitude(MyVoxelBase voxel)
         {
             if (voxel.DebugName.IndexOf("MyPlanet") >= 0)
@@ -101,6 +137,7 @@ namespace SpaceLabAPI.Endpoints
                 Size = planetSize(v),
                 AtmosphereAltitude = atmosphereAltitude(v),
                 HasAtmosphere = hasAtmosphere(v),
+                HillParameters = GetHillParams(v),
             }).ToList();
         }
 

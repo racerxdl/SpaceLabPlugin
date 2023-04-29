@@ -103,6 +103,7 @@
     <Compile Include="Endpoints\Info.cs" />
     <Compile Include="Endpoints\Interact.cs" />
     <Compile Include="Models\Faction.cs" />
+    <Compile Include="Models\GlobalInfo.cs" />
     <Compile Include="Models\Grid.cs" />
     <Compile Include="Models\GridGroup.cs" />
     <Compile Include="Models\Player.cs" />
