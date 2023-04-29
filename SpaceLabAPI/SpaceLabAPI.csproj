@@ -152,8 +152,10 @@
   <ItemGroup>
     <Compile Include="Endpoints\Info.cs" />
     <Compile Include="Endpoints\Interact.cs" />
-    <Compile Include="Extensions\Voxel.cs" />
-    <Compile Include="Extensions\Grid.cs" />
+    <Compile Include="Extensions\Players.cs" />
+    <Compile Include="Extensions\Factions.cs" />
+    <Compile Include="Extensions\Voxels.cs" />
+    <Compile Include="Extensions\Grids.cs" />
     <Compile Include="Models\Faction.cs" />
     <Compile Include="Models\GlobalInfo.cs" />
     <Compile Include="Models\Grid.cs" />

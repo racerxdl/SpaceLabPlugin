@@ -82,53 +82,19 @@ namespace SpaceLabAPI.Endpoints
         [GET("/voxels")]
         public List<Voxel> GetVoxels()
         {
-            return MySession.Static.VoxelMaps.Instances.ToList().Select((v) => new Voxel
-            {
-                Id = v.EntityId.ToString(),
-                Name = v.Name,
-                DebugName = v.DebugName,
-                Position = v.WorldMatrix.Translation,
-                Size = v.GetSize(),
-                AtmosphereAltitude = v.GetSize(),
-                HasAtmosphere = v.HasAtmosphere(),
-                HillParameters = v.GetHillParams(),
-            }).ToList();
+            return MySession.Static.VoxelMaps.Instances.GetVoxels();
         }
 
         [GET("/factions")]
         public List<Faction> GetFactions()
         {
-            return MySession.Static.Factions.GetAllFactions().Select((f) => new Faction
-            {
-                Name = f.Name,
-                Tag = f.Tag,
-                PublicNote = f.Description,
-                FounderName = MySession.Static.Players.TryGetIdentity(f.FounderId)?.DisplayName ?? "Unavailable",
-                Members = f.Members
-                .Select((kv) => kv.Value)
-                .Select((v) => v.PlayerId)
-                .Select((id) => MySession.Static.Players.TryGetIdentity(id))
-                .Where((p) => p != null)
-                .Select((p) => p.DisplayName).ToArray()
-            }).ToList();
+            return MySession.Static.Factions.GetFactions();
         }
 
         [GET("/players")]
         public List<Player> GetPlayers()
         {
-            var allPlayerIdentities = MySession.Static.Players.GetAllIdentities();
-            var onlinePlayers = MySession.Static.Players.GetOnlinePlayers().Select((p) => p.Identity.IdentityId).ToList();
-            var playerDict = new Dictionary<long, MyPlayer>();
-            MySession.Static.Players.GetOnlinePlayers().ForEach((p) => { playerDict[p.Identity.IdentityId] = p; });
-            return allPlayerIdentities.Where((p) => p != null).Select((p) => new Player
-            {
-                Id = p.IdentityId.ToString(),
-                SteamId = playerDict.GetValueOrDefault(p.IdentityId)?.Id.SteamId.ToString() ?? "",
-                Name = p.DisplayName,
-                Faction = MySession.Static.Factions.TryGetPlayerFaction(p.IdentityId)?.Name ?? "NONE",
-                IsOnline = onlinePlayers.Contains(p.IdentityId),
-                Position = playerDict.GetValueOrDefault(p.IdentityId)?.GetPosition() ?? new Vector3D()
-            }).ToList();
+            return MySession.Static.Players.GetIdentity();
         }
 
         [GET("/v2grids")]
