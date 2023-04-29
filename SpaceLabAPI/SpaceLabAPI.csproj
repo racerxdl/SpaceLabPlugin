@@ -33,16 +33,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Sandbox.Common">
-      <HintPath>..\SpaceLab\GameBinaries\Sandbox.Common.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\Sandbox.Common.dll</HintPath>
     </Reference>
     <Reference Include="Sandbox.Game">
-      <HintPath>..\SpaceLab\GameBinaries\Sandbox.Game.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\Sandbox.Game.dll</HintPath>
     </Reference>
     <Reference Include="Sandbox.Game.XmlSerializers">
-      <HintPath>..\SpaceLab\GameBinaries\Sandbox.Game.XmlSerializers.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\Sandbox.Game.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="Sandbox.Graphics">
-      <HintPath>..\SpaceLab\GameBinaries\Sandbox.Graphics.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\Sandbox.Graphics.dll</HintPath>
     </Reference>
     <Reference Include="SharpBoss">
       <HintPath>..\SharpBoss\SharpBoss.dll</HintPath>
@@ -51,13 +51,13 @@
       <HintPath>..\SharpBoss\SharpBoss.Logging.dll</HintPath>
     </Reference>
     <Reference Include="SpaceEngineers.Game">
-      <HintPath>..\SpaceLab\GameBinaries\SpaceEngineers.Game.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\SpaceEngineers.Game.dll</HintPath>
     </Reference>
     <Reference Include="SpaceEngineers.ObjectBuilders">
-      <HintPath>..\SpaceLab\GameBinaries\SpaceEngineers.ObjectBuilders.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\SpaceEngineers.ObjectBuilders.dll</HintPath>
     </Reference>
     <Reference Include="SpaceEngineers.ObjectBuilders.XmlSerializers">
-      <HintPath>..\SpaceLab\GameBinaries\SpaceEngineers.ObjectBuilders.XmlSerializers.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\SpaceEngineers.ObjectBuilders.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,34 +69,34 @@
     <Reference Include="System.Xml" />
     <Reference Include="VRage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="VRage.Game">
-      <HintPath>..\SpaceLab\GameBinaries\VRage.Game.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\VRage.Game.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Game.XmlSerializers">
-      <HintPath>..\SpaceLab\GameBinaries\VRage.Game.XmlSerializers.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\VRage.Game.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Input">
-      <HintPath>..\SpaceLab\GameBinaries\VRage.Input.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\VRage.Input.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Library">
-      <HintPath>..\SpaceLab\GameBinaries\VRage.Library.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\VRage.Library.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Math">
-      <HintPath>..\SpaceLab\GameBinaries\VRage.Math.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\VRage.Math.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Math.XmlSerializers">
-      <HintPath>..\SpaceLab\GameBinaries\VRage.Math.XmlSerializers.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\VRage.Math.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Scripting">
-      <HintPath>..\SpaceLab\GameBinaries\VRage.Scripting.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\VRage.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Steam">
-      <HintPath>..\SpaceLab\GameBinaries\VRage.Steam.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\VRage.Steam.dll</HintPath>
     </Reference>
     <Reference Include="VRage.UserInterface">
-      <HintPath>..\SpaceLab\GameBinaries\VRage.UserInterface.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\VRage.UserInterface.dll</HintPath>
     </Reference>
     <Reference Include="VRage.XmlSerializers">
-      <HintPath>..\SpaceLab\GameBinaries\VRage.XmlSerializers.dll</HintPath>
+      <HintPath>..\SDK\GameBinaries\VRage.XmlSerializers.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -113,7 +113,7 @@
     <Compile Include="Models\Voxel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpaceLab\SpaceLab.csproj">
+    <ProjectReference Include="..\SDK\SpaceLab.csproj">
       <Project>{C458384B-6DF7-4319-B80E-3ABFCACC97AD}</Project>
       <Name>SpaceLab</Name>
     </ProjectReference>
