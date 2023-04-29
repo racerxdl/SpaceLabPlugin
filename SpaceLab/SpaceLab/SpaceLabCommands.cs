@@ -16,5 +16,11 @@ namespace SpaceLab
 
         public SpaceLab Plugin => (SpaceLab)Context.Plugin;
 
+
+        [Command("bot", "Chat Bot System: Ask GPT for anything")]
+        public void ChatBot(string message)
+        {
+            Context.Respond(message);
+        }
     }
 }

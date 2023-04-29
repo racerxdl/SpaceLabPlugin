@@ -19,13 +19,15 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MinHeight="29.96"/>
+            <RowDefinition Height="Auto" MinHeight="0"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row ="0" VerticalAlignment="Center" Text="SpaceLab" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="2" Margin="5"/>
+        <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="SpaceLab" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="2" Margin="5,0,5,0" Height="21"/>
 
-        <Button Grid.Column="2" Grid.Row="4" Content="Save Config" Margin="5" Click="SaveButton_OnClick"></Button>
+        <Button Grid.Column="2" Grid.Row="4" Content="Save Config" Margin="5,5,5,5" Click="SaveButton_OnClick"></Button>
         <Button Grid.Column="1" Grid.Row="4" Content="Force Reload" Margin="10,5,622,5" Click="ForceReloadButton_OnClick"/>
+        <TextBox Grid.ColumnSpan="2" HorizontalAlignment="Left" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Top" Width="205" Margin="102,21,0,0" RenderTransformOrigin="0.512,0.531" Text="{}{Binding OpenAIToken}"/>
+        <Label Grid.Column="1" Content="OpenAI Token:" HorizontalAlignment="Left" Margin="10,16,0,0" Grid.Row="5" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

@@ -4,13 +4,10 @@ using Sandbox.Game.Entities;
 using Sandbox.Game.World;
 using SharpBoss.Attributes;
 using SharpBoss.Attributes.Methods;
-using SharpBoss.Logging;
 using SpaceLabAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VRage.Groups;
 using VRageMath;
 using SpaceLabAPI.Extensions;
@@ -53,11 +50,11 @@ namespace SpaceLabAPI.Endpoints
 
                 result += "<BR/>";
                 result += $"Voxel: {v.DebugName}<BR/>";
-                result += $"Size: {v.Size.ToString()}<BR/>";
-                result += $"SizeInMeters: {v.SizeInMetres.ToString()}<BR/>";
-                result += $"SizeInMetersHalf: {v.SizeInMetresHalf.ToString()}<BR/>";
-                result += $"SizeMinusOne: {v.SizeMinusOne.ToString()}<BR/>";
-                result += $"VoxelSize: {v.VoxelSize.ToString()}<BR/>";
+                result += $"Size: {v.Size}<BR/>";
+                result += $"SizeInMeters: {v.SizeInMetres}<BR/>";
+                result += $"SizeInMetersHalf: {v.SizeInMetresHalf}<BR/>";
+                result += $"SizeMinusOne: {v.SizeMinusOne}<BR/>";
+                result += $"VoxelSize: {v.VoxelSize}<BR/>";
                 result += $"Scale: {v.WorldMatrix.Scale}<BR/>";
                 result += $"ScaleGroup: {v.ScaleGroup}<BR/>";
                 result += $"BoundingBoxSize: {v.Model?.BoundingBoxSize}<BR/>";
@@ -257,14 +254,14 @@ namespace SpaceLabAPI.Endpoints
             int relGroupId = 0;
             foreach (var group in MyCubeGridGroups.Static.Physical.Groups.ToList())
             {
-                foreach (MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node groupNodes in group.Nodes)
+                foreach (MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node groupNodes in group.Nodes.ToList())
                 {
                     MyCubeGrid grid = groupNodes.NodeData;
                     var ownerId = grid.BigOwners.Count > 0 ? grid.BigOwners[0] : -1;
                     var ownerName = "NONE";
                     var factionName = "NONE";
                     var factionTag = "NONE";
-
+                    
                     if (ownerId != -1)
                     {
                         ownerName = MySession.Static.Players.TryGetIdentity(ownerId)?.DisplayName ?? "NONE";
