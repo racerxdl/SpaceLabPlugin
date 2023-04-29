@@ -16,6 +16,8 @@ namespace SpaceLabAPI.Models
         public string FactionTag { get; set; }
         public int Blocks { get; set; }
         public bool IsPowered { get; set; }
+        public bool AntenaIsWorking { get; set; }
+        public bool HasAntena { get; set; }
         public double GridSize { get; set; }
         public bool IsStatic { get; set; }
         public bool IsParked { get; set; }

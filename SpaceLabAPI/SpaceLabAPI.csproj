@@ -33,16 +33,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Sandbox.Common">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\Sandbox.Common.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\Sandbox.Common.dll</HintPath>
     </Reference>
     <Reference Include="Sandbox.Game">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\Sandbox.Game.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\Sandbox.Game.dll</HintPath>
     </Reference>
     <Reference Include="Sandbox.Game.XmlSerializers">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\Sandbox.Game.XmlSerializers.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\Sandbox.Game.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="Sandbox.Graphics">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\Sandbox.Graphics.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\Sandbox.Graphics.dll</HintPath>
     </Reference>
     <Reference Include="SharpBoss">
       <HintPath>..\SharpBoss\SharpBoss.dll</HintPath>
@@ -51,13 +51,13 @@
       <HintPath>..\SharpBoss\SharpBoss.Logging.dll</HintPath>
     </Reference>
     <Reference Include="SpaceEngineers.Game">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\SpaceEngineers.Game.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\SpaceEngineers.Game.dll</HintPath>
     </Reference>
     <Reference Include="SpaceEngineers.ObjectBuilders">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\SpaceEngineers.ObjectBuilders.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\SpaceEngineers.ObjectBuilders.dll</HintPath>
     </Reference>
     <Reference Include="SpaceEngineers.ObjectBuilders.XmlSerializers">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\SpaceEngineers.ObjectBuilders.XmlSerializers.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\SpaceEngineers.ObjectBuilders.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,39 +69,40 @@
     <Reference Include="System.Xml" />
     <Reference Include="VRage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="VRage.Game">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\VRage.Game.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\VRage.Game.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Game.XmlSerializers">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\VRage.Game.XmlSerializers.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\VRage.Game.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Input">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\VRage.Input.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\VRage.Input.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Library">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\VRage.Library.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\VRage.Library.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Math">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\VRage.Math.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\VRage.Math.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Math.XmlSerializers">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\VRage.Math.XmlSerializers.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\VRage.Math.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Scripting">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\VRage.Scripting.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\VRage.Scripting.dll</HintPath>
     </Reference>
     <Reference Include="VRage.Steam">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\VRage.Steam.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\VRage.Steam.dll</HintPath>
     </Reference>
     <Reference Include="VRage.UserInterface">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\VRage.UserInterface.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\VRage.UserInterface.dll</HintPath>
     </Reference>
     <Reference Include="VRage.XmlSerializers">
-      <HintPath>..\..\SpaceLabExperimental\SpaceLabExperimental\SpaceEngineers\VRage.XmlSerializers.dll</HintPath>
+      <HintPath>..\SpaceLab\GameBinaries\VRage.XmlSerializers.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Endpoints\Info.cs" />
     <Compile Include="Endpoints\Interact.cs" />
+    <Compile Include="Extensions\Grid.cs" />
     <Compile Include="Models\Faction.cs" />
     <Compile Include="Models\GlobalInfo.cs" />
     <Compile Include="Models\Grid.cs" />

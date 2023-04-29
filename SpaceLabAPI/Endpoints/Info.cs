@@ -1,4 +1,5 @@
 ﻿using Sandbox.Engine.Multiplayer;
+using Sandbox.Game.Entities.Cube;
 using Sandbox.Game.Entities;
 using Sandbox.Game.World;
 using SharpBoss.Attributes;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VRage.Groups;
 using VRageMath;
+using SpaceLabAPI.Extensions;
 
 namespace SpaceLabAPI.Endpoints
 {
@@ -199,17 +201,9 @@ namespace SpaceLabAPI.Endpoints
                 foreach (MyGroups<MyCubeGrid, MyGridPhysicalGroupData>.Node groupNodes in group.Nodes)
                 {
                     MyCubeGrid grid = groupNodes.NodeData;
-                    var ownerId = grid.BigOwners.Count > 0 ? grid.BigOwners[0] : -1;
-                    var ownerName = "NONE";
-                    var factionName = "NONE";
-                    var factionTag = "NONE";
-
-                    if (ownerId != -1)
-                    {
-                        ownerName = MySession.Static.Players.TryGetIdentity(ownerId)?.DisplayName ?? "NONE";
-                        factionName = MySession.Static.Factions.TryGetPlayerFaction(ownerId)?.Name ?? "NONE";
-                        factionTag = MySession.Static.Factions.TryGetPlayerFaction(ownerId)?.Tag ?? "NONE";
-                    }
+                    var ownerName = grid.GetOwner();
+                    var factionName = grid.GetFactionName();
+                    var factionTag = grid.GetFactionTag();
 
                     factions[ownerName] = factionName;
                     factionTags[ownerName] = factionTag;
@@ -231,6 +225,8 @@ namespace SpaceLabAPI.Endpoints
                         FactionTag = factionTag,
                         Blocks = grid.BlocksCount,
                         IsPowered = grid.IsPowered,
+                        HasAntena = grid.HasAntena(false),
+                        AntenaIsWorking = grid.HasAntena(true),
                         IsStatic = grid.IsStatic,
                         IsParked = grid.IsParked,
                         GridSize = grid.GridSize,
