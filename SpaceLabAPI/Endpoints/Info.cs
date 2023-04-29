@@ -81,51 +81,6 @@ namespace SpaceLabAPI.Endpoints
             return result.Replace("<BR/>", Environment.NewLine);
         }
 
-        public double planetSize(MyVoxelBase voxel)
-        {
-            if (voxel.DebugName.IndexOf("MyPlanet") >= 0)
-            {
-                MyPlanet p = voxel as MyPlanet;
-
-                return p.AverageRadius * 2;
-            }
-
-            return Math.Max(Math.Max(voxel.Size.X, voxel.Size.Y), voxel.Size.Z) / 2.5;
-        }
-
-        public Tuple<double, double> GetHillParams(MyVoxelBase voxel)
-        {
-            if (voxel.DebugName.IndexOf("MyPlanet") >= 0)
-            {
-                MyPlanet p = voxel as MyPlanet;
-                return new Tuple<double, double>(p.Generator.HillParams.Min, p.Generator.HillParams.Max);
-            }
-
-            return new Tuple<double, double>(0, 0);
-        }
-
-        public double atmosphereAltitude(MyVoxelBase voxel)
-        {
-            if (voxel.DebugName.IndexOf("MyPlanet") >= 0)
-            {
-                MyPlanet p = voxel as MyPlanet;
-
-                return p.AtmosphereAltitude;
-            }
-
-            return 0;
-        }
-        public bool hasAtmosphere(MyVoxelBase voxel)
-        {
-            if (voxel.DebugName.IndexOf("MyPlanet") >= 0)
-            {
-                MyPlanet p = voxel as MyPlanet;
-
-                return p.HasAtmosphere;
-            }
-
-            return false;
-        }
 
         [GET("/voxels")]
         public List<Voxel> GetVoxels()
@@ -136,10 +91,10 @@ namespace SpaceLabAPI.Endpoints
                 Name = v.Name,
                 DebugName = v.DebugName,
                 Position = v.WorldMatrix.Translation,
-                Size = planetSize(v),
-                AtmosphereAltitude = atmosphereAltitude(v),
-                HasAtmosphere = hasAtmosphere(v),
-                HillParameters = GetHillParams(v),
+                Size = v.GetSize(),
+                AtmosphereAltitude = v.GetSize(),
+                HasAtmosphere = v.HasAtmosphere(),
+                HillParameters = v.GetHillParams(),
             }).ToList();
         }
 
