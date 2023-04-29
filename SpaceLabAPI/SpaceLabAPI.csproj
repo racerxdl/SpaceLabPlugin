@@ -113,10 +113,18 @@
     <Compile Include="Models\Voxel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SDK\SpaceLab.csproj">
+    <ProjectReference Include="..\SpaceLab\SpaceLab.csproj">
       <Project>{C458384B-6DF7-4319-B80E-3ABFCACC97AD}</Project>
       <Name>SpaceLab</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="manifest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
