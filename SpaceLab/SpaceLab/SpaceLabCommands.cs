@@ -16,11 +16,22 @@ namespace SpaceLab
 
         public SpaceLab Plugin => (SpaceLab)Context.Plugin;
 
+        [Command("deaths", "List all deaths")]
+        public void Deaths()
+        {
+            var players = SpaceLabServer.Store.Players.Values.ToList();
 
-        [Command("bot", "Chat Bot System: Ask GPT for anything")]
+            foreach (var player in players)
+            {
+                Context.Respond($"{player.Name} died {player.Deaths} times", "Klang");
+            }
+        }
+
+        /*[Command("bot", "Chat Bot System: Ask GPT for anything")]
         public void ChatBot(string message)
         {
             Context.Respond(message);
         }
+        */
     }
 }

@@ -8,27 +8,88 @@ using System.Threading;
 using System.Threading.Tasks;
 using SharpBoss;
 using Sandbox.Engine.Multiplayer;
+using Sandbox.Game.Entities;
+using Sandbox.Game.Entities.Cube;
 using Sandbox.Game.World;
+using SpaceLab.Models;
+using VRage.Game.ModAPI;
+using SpaceLab.Extensions;
+using Torch.API;
 
 namespace SpaceLab
 {
     public class SpaceLabServer
     {
+        public static SpaceStore Store = new SpaceStore();
         static readonly Logger Log = LogManager.GetCurrentClassLogger();
         static List<SpaceLabMessage> messages;
         static Mutex messageMtx;
         bool running = false;
+        private readonly Timer tickTimer;
+        private ITorchBase Torch;
 
         SharpBoss.SharpBoss sharpBoss;
 
-        public SpaceLabServer()
+        public SpaceLabServer(string URL, ITorchBase torch, string StoragePath)
         {
-            Log.Info("Creating sharpboss instance");
-            sharpBoss = new SharpBoss.SharpBoss("http://10.30.0.21:20000/");
+            Torch = torch;
+            Log.Info($"Creating sharpboss instance with BaseURL: {URL}");
+            sharpBoss = new SharpBoss.SharpBoss(URL);
             Log.Info("sharpboss instance created");
             messages = new List<SpaceLabMessage>();
             messageMtx = new Mutex();
+            tickTimer = new Timer(Tick, null, 0, 500);
+            Store.Setup(StoragePath);
         }
+
+        private void Tick(object state)
+        {
+            if (running)
+            {
+                Torch.InvokeBlocking(() => { Store.Tick(); });
+            }
+        }
+
+        public void RegisterCallbacks()
+        {
+            // Register callbacks
+            Log.Info($"Registering callbacks");
+            MyMultiplayer.Static.ChatMessageReceived += Static_ChatMessageReceived;
+            MyCubeGridGroups.Static.OnGridGroupCreated += Static_OnGridGroupCreated;
+            MyCubeGridGroups.Static.OnGridGroupDestroyed += Static_OnGridGroupDestroyed;
+            MySession.Static.Players.PlayerCharacterDied += Players_PlayerCharacterDied;
+        }
+
+        private void Players_PlayerCharacterDied(long characterEntityId)
+        {
+            Store.PlayerDeath(characterEntityId);
+        }
+
+        public void LoadAll()
+        {
+            // Load all grids
+            Log.Info($"Loading grids");
+            var currentGrids = MyCubeGridGroups.Static.Physical.Groups.ToList();
+            foreach (var group in currentGrids)
+            {
+                Log.Info($"Loading group {group.GroupData} with {group.Nodes.Count} grids");
+                Static_OnGridGroupCreated(group.GroupData);
+                foreach (var groupNodes in group.Nodes)
+                {
+                    Log.Info($"Loading grid {groupNodes.NodeData.DisplayName}");
+                    Obj_OnGridAdded(group.GroupData, groupNodes.NodeData, null);
+                }
+            }
+
+            Log.Info($"Loading voxels");
+            var voxels = MySession.Static.VoxelMaps.Instances.ToList();
+            foreach (var voxel in voxels)
+            {
+                Log.Info($"Loading voxel {voxel.StorageName} - {voxel.DisplayName} - {voxel.DebugName}");
+                Store.AddVoxel(voxel.ToSpaceVoxel());
+            }
+        }
+
 
         public void ForceReload()
         {
@@ -42,11 +103,52 @@ namespace SpaceLab
                 Log.Info("Starting sharpboss instance");
                 running = true;
                 sharpBoss.Run();
-                MyMultiplayer.Static.ChatMessageReceived += Static_ChatMessageReceived;
             }
         }
 
-        private void Static_ChatMessageReceived(ulong steamUserId, string messageText, Sandbox.Game.Gui.ChatChannel channel, long targetId, string customAuthorName)
+        private void Static_OnGridGroupDestroyed(IMyGridGroupData gridGroup)
+        {
+            if (gridGroup is MyGridPhysicalGroupData)
+            {
+                Log.Info($"GridGroup removed {gridGroup} ({gridGroup.GetType().FullName})");
+                gridGroup.OnGridAdded -= Obj_OnGridAdded;
+                gridGroup.OnGridRemoved -= Obj_OnGridRemoved;
+                Store.RemoveRelativeGroup(gridGroup);
+            }
+        }
+
+        private void Static_OnGridGroupCreated(IMyGridGroupData gridGroup)
+        {
+            if (gridGroup is MyGridPhysicalGroupData)
+            {
+                Log.Info($"GridGroup added {gridGroup}");
+                gridGroup.OnGridAdded += Obj_OnGridAdded;
+                gridGroup.OnGridRemoved += Obj_OnGridRemoved;
+                gridGroup.OnReleased += (group) =>
+                {
+                    gridGroup.OnGridAdded -= Obj_OnGridAdded;
+                    gridGroup.OnGridRemoved -= Obj_OnGridRemoved;
+                };
+                Store.GetOrAddRelativeGroup(gridGroup);
+            }
+        }
+
+        private void Obj_OnGridRemoved(IMyGridGroupData thisGrid, IMyCubeGrid removedGrid, IMyGridGroupData previousGroup)
+        {
+            // Store.RemoveGrid(removedGrid.EntityId.ToString());
+        }
+
+        private void Obj_OnGridAdded(IMyGridGroupData thisGrid, IMyCubeGrid addedGrid, IMyGridGroupData previousGroup)
+        {
+            Log.Info($"Grid added {addedGrid.EntityId} ({addedGrid.GetType().FullName}");
+            if (!(addedGrid is MyCubeGrid grid))
+                return;
+
+            var relGroupId = Store.GetOrAddRelativeGroup(thisGrid);
+            Store.AddGrid(grid, relGroupId);
+        }
+
+        private void Static_ChatMessageReceived(ulong steamUserId, string messageText, Sandbox.Game.Gui.ChatChannel channel, long targetId, string customAuthorName, ulong? arg6)
         {
             MyPlayer player;
             if (!MySession.Static.Players.TryGetPlayerBySteamId(steamUserId, out player))

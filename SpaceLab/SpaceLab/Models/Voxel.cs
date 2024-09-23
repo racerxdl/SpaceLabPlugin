@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VRageMath;
 
-namespace SpaceLabAPI.Models
+namespace SpaceLab.Models
 {
     public class Voxel
     {
@@ -13,6 +9,7 @@ namespace SpaceLabAPI.Models
         public string Name { get; set; }
         public string DebugName { get; set; }
         public Vector3D Position { get; set; }
+        public Quaternion Rotation { get; set; }
         public double Size { get; set; }
         public bool HasAtmosphere { get; set; }
         public double AtmosphereAltitude { get; set; }
@@ -21,11 +18,5 @@ namespace SpaceLabAPI.Models
         public double Z { get { return Position.Z; } }
 
         public Tuple<double, double> HillParameters { get; set; }
-        // Deprecated
-        public double SizeX { get { return Size; } }
-        // Deprecated
-        public double SizeY { get { return Size; } }
-        // Deprecated
-        public double SizeZ { get { return Size; } }
     }
 }

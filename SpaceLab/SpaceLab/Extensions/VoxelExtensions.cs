@@ -1,30 +1,28 @@
 ﻿using Sandbox.Game.Entities;
-using SpaceLabAPI.Models;
+using SpaceLab.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VRage.Collections;
+using VRageMath;
 
-namespace SpaceLabAPI.Extensions
+namespace SpaceLab.Extensions
 {
     public static class ExtendedVoxel
     {
-        public static List<Voxel> GetVoxels(this DictionaryValuesReader<long, MyVoxelBase> v)
+        public static Voxel ToSpaceVoxel(this MyVoxelBase v)
         {
-            var voxels = v.ToList();
-            return voxels.Select((voxel) => voxel.Voxel()).ToList();
-        }
+            var rot = Quaternion.CreateFromRotationMatrix(v.WorldMatrix);
 
-        public static Voxel Voxel(this MyVoxelBase v)
-        {
             return new Voxel
             {
                 Id = v.EntityId.ToString(),
                 Name = v.Name,
                 DebugName = v.DebugName,
                 Position = v.WorldMatrix.Translation,
+                Rotation = rot,
                 Size = v.GetSize(),
                 AtmosphereAltitude = v.GetSize(),
                 HasAtmosphere = v.HasAtmosphere(),

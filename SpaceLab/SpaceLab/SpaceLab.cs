@@ -1,6 +1,7 @@
 ﻿using NLog;
 using System;
 using System.IO;
+using System.Security.Policy;
 using System.Threading;
 using System.Windows.Controls;
 using Torch;
@@ -32,8 +33,8 @@ namespace SpaceLab
         public override void Init(ITorchBase torch)
         {
             base.Init(torch);
-            server = new SpaceLabServer();
             SetupConfig();
+            server = new SpaceLabServer(Config.BaseURL, torch, StoragePath);
             _globalGps.Setup(StoragePath);
 
             var sessionManager = Torch.Managers.GetManager<TorchSessionManager>();
@@ -60,15 +61,17 @@ namespace SpaceLab
             
             switch (state)
             {
-
                 case TorchSessionState.Loaded:
                     Log.Info("Session Loaded!");
+                    server.RegisterCallbacks();
+                    server.LoadAll();
                     server.StartServer();
                     break;
 
                 case TorchSessionState.Unloading:
                     Log.Info("Session Unloading!");
                     server.StopServer();
+                    SpaceLabServer.Store.Save();
                     break;
             }
         }

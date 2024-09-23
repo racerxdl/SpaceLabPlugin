@@ -18,10 +18,10 @@ namespace SpaceLab
             var plugin = Plugin.GetGlobalGPS();
             var config = plugin.GetPersistence();
 
-            if (plugin.IsAllowedToCommand(Context, config.Data.UsagePromoteLevel))
+            /*if (plugin.IsAllowedToCommand(Context, config.Data.UsagePromoteLevel))
             {
                 return;
-            }
+            }*/
 
             config.Data.GlobalSavedPositions.ForEach(gps => GlobalGps.MarkGpsToPlayer(Context.Player.IdentityId, gps.ToMyGps()));
             Context.Respond("Successful get all global gps location");
@@ -34,10 +34,10 @@ namespace SpaceLab
             var plugin = Plugin.GetGlobalGPS();
             var config = plugin.GetPersistence();
 
-            if (plugin.IsAllowedToCommand(Context, config.Data.ManagePromoteLevel))
+            /*if (plugin.IsAllowedToCommand(Context, config.Data.ManagePromoteLevel))
             {
                 return;
-            }
+            }*/
 
             var player = Context.Player;
             var playerPos = player.GetPosition();
@@ -64,10 +64,10 @@ namespace SpaceLab
             var plugin = Plugin.GetGlobalGPS();
             var config = plugin.GetPersistence();
 
-            if (plugin.IsAllowedToCommand(Context, config.Data.ManagePromoteLevel))
+            /*if (plugin.IsAllowedToCommand(Context, config.Data.ManagePromoteLevel))
             {
                 return;
-            }
+            }*/
 
             foreach(var gps in config.Data.GlobalSavedPositions.ToList().Where(gps => gps.Name == name))
             {

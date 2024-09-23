@@ -61,13 +61,12 @@ namespace SpaceLab
         
         public static void MarkGpsToPlayer(long identityId, MyGps gps)
         {
-            var gpsCollection = (MyGpsCollection) MyAPIGateway.Session?.GPS;
-            gpsCollection?.SendAddGpsRequest(identityId, ref gps, 0L, true);
+            MySession.Static.Gpss.SendAddGpsRequest(identityId, ref gps);
         }
 
         public static void MarkGpsToAllPlayers(SpaceLab plugin, MyGps gps)
         {
-            var players = MySession.Static.Players.GetAllIdentities();
+            var players = SpaceLabServer.Store.Players.Values;
             foreach (var player in players)
             {
                 MarkGpsToPlayer(player.IdentityId, gps);

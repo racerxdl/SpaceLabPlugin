@@ -9,6 +9,13 @@ namespace SpaceLab
 {
     public class GlobalGpsConfig_GPS : ViewModel
     {
+        private string _createdBy;
+        private Guid _id = Guid.NewGuid();
+        private string _name;
+        private double _x;
+        private double _y;
+        private double _z;
+
         public GlobalGpsConfig_GPS() { }
         public GlobalGpsConfig_GPS(Vector3D axis, string name, string createdBy)
         {
@@ -19,42 +26,36 @@ namespace SpaceLab
             Name = name;
         }
         
-        private double _x;
-        private double X
+        public double X
         {
             get => _x;
             set => SetValue(ref _x, value); 
         }
         
-        private double _y;
-        private double Y
+        public double Y
         {
             get => _y;
             set => SetValue(ref _y, value); 
         }
         
-        private double _z;
-        private double Z
+        public double Z
         {
             get => _z;
             set => SetValue(ref _z, value); 
         }
 
-        private string _createdBy;
-        private string CreatedBy
+        public string CreatedBy
         {
             get => _createdBy;
             set => SetValue(ref _createdBy, value);
         }
 
-        private Guid _id = Guid.NewGuid();
         public Guid Id
         {
             get => _id;
             set => SetValue(ref _id, value);
         }
 
-        private string _name;
         public string Name
         {
             get => _name;

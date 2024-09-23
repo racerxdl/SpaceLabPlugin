@@ -10,6 +10,9 @@ namespace SpaceLab
         private string _StringProperty = "root";
         private int _IntProperty = 0;
         private bool _BoolProperty = true;
+        private string _baseUrl = "http://192.168.55.11:20000/";
+
+        public string BaseURL { get => _baseUrl; set => SetValue(ref _baseUrl, value); }
 
         public string OpenAIToken { get => _OpenAIToken; set => SetValue(ref _OpenAIToken, value); }
 
