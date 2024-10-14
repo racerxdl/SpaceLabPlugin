@@ -50,7 +50,7 @@ namespace SpaceLab
 
         public void AddGrid(MyCubeGrid grid, int relGroupId)
         {
-            Log.Info($"New grid added: {grid.Name} ({grid.EntityId})");
+            // Log.Debug($"New grid added: {grid.Name} ({grid.EntityId})");
             var ngrid = new Grid(grid, relGroupId);
             grid.OnClose += (entity) => RemoveGrid(entity.EntityId.ToString());
             Grids[ngrid.Id] = ngrid;
@@ -62,7 +62,7 @@ namespace SpaceLab
             if (!Grids.ContainsKey(id))
                 return;
 
-            Log.Info($"Grid removed: {Grids[id].Name} ({id})");
+            // Log.Debug($"Grid removed: {Grids[id].Name} ({id})");
             var grid = Grids[id];
             Grids.Remove(id);
             OnGridRemoved?.Invoke(this, grid);

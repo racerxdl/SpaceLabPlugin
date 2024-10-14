@@ -15,6 +15,7 @@ using SpaceLab.Models;
 using VRage.Game.ModAPI;
 using SpaceLab.Extensions;
 using Torch.API;
+using VRage.GameServices;
 
 namespace SpaceLab
 {
@@ -110,7 +111,7 @@ namespace SpaceLab
         {
             if (gridGroup is MyGridPhysicalGroupData)
             {
-                Log.Info($"GridGroup removed {gridGroup} ({gridGroup.GetType().FullName})");
+                // Log.Info($"GridGroup removed {gridGroup} ({gridGroup.GetType().FullName})");
                 gridGroup.OnGridAdded -= Obj_OnGridAdded;
                 gridGroup.OnGridRemoved -= Obj_OnGridRemoved;
                 Store.RemoveRelativeGroup(gridGroup);
@@ -121,7 +122,7 @@ namespace SpaceLab
         {
             if (gridGroup is MyGridPhysicalGroupData)
             {
-                Log.Info($"GridGroup added {gridGroup}");
+                // Log.Debug($"GridGroup added {gridGroup}");
                 gridGroup.OnGridAdded += Obj_OnGridAdded;
                 gridGroup.OnGridRemoved += Obj_OnGridRemoved;
                 gridGroup.OnReleased += (group) =>
@@ -140,7 +141,7 @@ namespace SpaceLab
 
         private void Obj_OnGridAdded(IMyGridGroupData thisGrid, IMyCubeGrid addedGrid, IMyGridGroupData previousGroup)
         {
-            Log.Info($"Grid added {addedGrid.EntityId} ({addedGrid.GetType().FullName}");
+            // Log.Debug($"Grid added {addedGrid.EntityId} ({addedGrid.GetType().FullName}");
             if (!(addedGrid is MyCubeGrid grid))
                 return;
 
@@ -148,7 +149,7 @@ namespace SpaceLab
             Store.AddGrid(grid, relGroupId);
         }
 
-        private void Static_ChatMessageReceived(ulong steamUserId, string messageText, Sandbox.Game.Gui.ChatChannel channel, long targetId, string customAuthorName, ulong? arg6)
+        private void Static_ChatMessageReceived(ulong steamUserId, string messageText, Sandbox.Game.Gui.ChatChannel channel, long _, ChatMessageCustomData? customData)
         {
             MyPlayer player;
             if (!MySession.Static.Players.TryGetPlayerBySteamId(steamUserId, out player))
@@ -156,7 +157,7 @@ namespace SpaceLab
                 player = null;
             }
 
-            Log.Debug($"Chat ({steamUserId}) {customAuthorName}: {messageText}");
+            Log.Debug($"Chat ({steamUserId}) {customData?.AuthorName}: {messageText}");
             if (channel == Sandbox.Game.Gui.ChatChannel.Global && player != null)
             {
                 messageMtx.WaitOne();

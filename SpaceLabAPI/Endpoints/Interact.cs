@@ -34,7 +34,11 @@ namespace SpaceLabAPI.Endpoints
                     MyCubeGrid grid = groupNodes.NodeData;
                     if (gridIds.Contains(grid.EntityId))
                     {
-                        MyMultiplayer.Static.SendChatMessage($"Erasing entity {grid.DisplayName}-{grid.EntityId}", Sandbox.Game.Gui.ChatChannel.Global, 0, "SERVER");
+                        MyMultiplayer.Static.SendChatMessage($"Erasing entity {grid.DisplayName}-{grid.EntityId}", Sandbox.Game.Gui.ChatChannel.Global, 0, new VRage.GameServices.ChatMessageCustomData
+                        {
+                            AuthorName = "SERVER",
+                            TextColor = VRageMath.Color.Yellow,
+                        });
                         Logger.Info($"Erasing entity {grid.DisplayName}-{grid.EntityId}");
                         result += $"{grid.DisplayName}, ";
                         gridsToDelete.Add(grid);
@@ -49,7 +53,10 @@ namespace SpaceLabAPI.Endpoints
         [POST("/sendmessage")]
         public bool SendMessage(SpaceLabMessage message)
         {
-            MyMultiplayer.Static.SendChatMessage(message.Message, Sandbox.Game.Gui.ChatChannel.Global, 0, message.From);
+            MyMultiplayer.Static.SendChatMessage(message.Message, Sandbox.Game.Gui.ChatChannel.Global, 0, new VRage.GameServices.ChatMessageCustomData
+            {
+                AuthorName = message.From,
+            });
             Logger.Info($"Sending message [{message.From}] - {message.Message}");
             return true;
         }
